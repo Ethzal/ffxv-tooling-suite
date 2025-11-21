@@ -1,0 +1,17 @@
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# --- Archivos generados por el IDE de IntelliJ ---
+.idea/
+target/
+*.iml
+
+# --- Archivos de Input/Output generados por la herramienta ---
+output/
+*.bin
+*.json
+
+# --- Otros archivos temporales o de caché ---
+*.log
