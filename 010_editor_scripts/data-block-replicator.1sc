@@ -1,0 +1,70 @@
+//------------------------------------------------
+// 010 Editor Script - Data Block Replicator (Componente de QA/Data Migration)
+//
+// Propósito: Implementar una copia de datos binarios segmentada
+// entre dos bloques de memoria/archivo (Fuente a Destino).
+// Controla la copia mediante un rango de índice [RANGE_START_INDEX, RANGE_END_INDEX]
+// para propósitos de testing y validación de bloques específicos.
+//
+// Autor: Ethzal
+// Version: 1.0
+//------------------------------------------------
+
+// Definición de Parámetros de Entrada (Configuración del Proceso)
+#define OFFSET_ENEMY_DATA_SOURCE   0x3CBCB   // bloque anterior (fuente)
+#define OFFSET_ENEMY_DATA_TARGET   0x33A3B   // bloque destino (enemigo actual)
+#define SIZE_ENEMY_FIELD           4         // tamaño de cada int/float
+#define SIZE_ENEMY_ENTRIES         273       // número de valores SIZE_ENEMY_ENTRIES
+
+// Parámetros de Control de Flujo (Filtrado por Rango)
+#define RANGE_START_INDEX          0         // índice inicial (inclusive)
+#define RANGE_END_INDEX            272       // índice final (inclusive)
+#define INT_MAX_EXPECTED           99999999  // umbral para enteros normales
+
+// Variables usadas en bucles, hay que declararlas fuera en 010 Editor
+int64 posSrc, posDst, offset_delta;          // offset de los campos
+int i, oldValue, newValue, rawIntValue;      // contador y valores INT
+float oldFloatValue, newFloatValue;          // valores FLOAT
+
+Printf("=== Copiando con intervalo: %d a %d ===\n\n", RANGE_START_INDEX, RANGE_END_INDEX);
+
+for (i = 0; i < SIZE_ENEMY_ENTRIES; i++)
+{
+    offset_delta = (int64)i * SIZE_ENEMY_FIELD;
+    posSrc = OFFSET_ENEMY_DATA_SOURCE + offset_delta;
+    posDst = OFFSET_ENEMY_DATA_TARGET + offset_delta;
+
+    if (i >= RANGE_START_INDEX && i <= RANGE_END_INDEX)
+    {
+        // Leemos el binario fuente como INT, si es 0, leemos el target
+        rawIntValue = ReadInt(posSrc);
+        if (rawIntValue == 0)
+        {
+            rawIntValue = ReadInt(posDst);
+        }
+
+        // Lógica heurística: Si el valor de INT es mayor/menor que +/- INT_MAX_EXPECTED, entonces es FLOAT
+        if (rawIntValue > INT_MAX_EXPECTED || rawIntValue < -INT_MAX_EXPECTED)
+        {
+            // Se asume que es un FLOAT (convertimos el binario a float)
+            oldFloatValue = ReadFloat(posDst);
+            newFloatValue = ReadFloat(posSrc);
+            WriteFloat(posDst, newFloatValue);
+
+            Printf("[%3d] (FLOAT) OLD: %10.2f | NEW: %10.2f | ADDR: 0x%I64X -> 0x%I64X\n",
+                   i, oldFloatValue, newFloatValue, posSrc, posDst);
+        }
+        else
+        {
+            // Se asume que es un INT normal
+            oldValue = ReadInt(posDst);
+            newValue = ReadInt(posSrc);
+            WriteInt(posDst, newValue);
+
+            Printf("[%3d] ( INT ) OLD: %10d | NEW: %10d | ADDR: 0x%I64X -> 0x%I64X\n",
+                   i, oldValue, newValue, posSrc, posDst);
+        }
+    }
+}
+
+Printf("\n=== Finalizado ===\n");
