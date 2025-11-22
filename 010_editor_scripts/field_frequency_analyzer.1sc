@@ -1,0 +1,110 @@
+//------------------------------------------------
+// 010 Editor Script - Field Frequency Analyzer (Componente de Data Insight)
+//------------------------------------------------
+// Propósito: Analizar la frecuencia de valores únicos en un campo binario segmentado,
+// útil para identificar patrones, rangos o valores por defecto en estructuras de datos.
+//
+// Autor: Ethzal
+// Version: 1.0
+//------------------------------------------------
+
+// Definición de Parámetros de Entrada (Configuración del Proceso)
+#define BASE_OFFSET            0xA69F        // Offset del primer elemento del campo [235]
+#define ENTRY_COUNT            935           // Número total de entradas
+#define ENTRY_SIZE             0x448         // Distancia entre campos [235] consecutivos (Alignment/Stride)
+#define MAX_UNIQUE_VALUES      935           // Límite superior para los arrays de conteo
+#define INT_MAX_EXPECTED       99999999      // umbral para enteros normales
+
+// Variables de Control
+int i, j;
+int64 pos;
+int value;
+int found;
+
+// Almacenamiento de Resultados (Máximo 935 valores únicos)
+int valores[MAX_UNIQUE_VALUES];
+int apariciones[MAX_UNIQUE_VALUES];
+int uniqueCount = 0;
+
+Printf("=== Inicializando Análisis de Frecuencia (Total %d Entradas) ===\n\n", ENTRY_COUNT);
+
+// VALIDACIÓN DE LÍMITES
+if (ENTRY_COUNT > MAX_UNIQUE_VALUES)
+{
+    Printf("ERROR: ENTRY_COUNT excede el límite de almacenamiento del array (%d). Abortando.\n", MAX_UNIQUE_VALUES);
+    return;
+}
+
+// 1. RECORRER Y AGREGAR (Fase de Extracción y Transformación)
+for (i = 0; i < ENTRY_COUNT; i++)
+{
+    pos = BASE_OFFSET + (int64)i * ENTRY_SIZE;
+
+    // Leemos el binario fuente como INT
+    value = ReadInt(pos);
+
+    // Lógica heurística: Si el valor de INT es mayor/menor que +/- INT_MAX_EXPECTED, entonces es FLOAT
+    if (value > INT_MAX_EXPECTED || value < -INT_MAX_EXPECTED)
+    {
+        // Se asume que es un FLOAT (convertimos el binario a FLOAT)
+        value = ReadFloat(pos);
+    }
+
+    // Imprimir cada entrada (Output Detallado)
+    Printf("[%3d] VALUE: %10d | OFFSET: 0x%I64X\n", i, value, pos);
+
+    // Buscar si el valor ya está registrado (Búsqueda Lineal)
+    found = 0;
+    for (j = 0; j < uniqueCount; j++)
+    {
+        if (valores[j] == value)
+        {
+            apariciones[j]++;
+            found = 1;
+            break;
+        }
+    }
+
+    // Si no estaba, agregarlo como nuevo valor único
+    if (!found)
+    {
+        valores[uniqueCount] = value;
+        apariciones[uniqueCount] = 1;
+        uniqueCount++;
+    }
+}
+
+
+// 2. ORDENAMIENTO POR FRECUENCIA (Implementación de Burbuja - O(U^2) donde U es uniqueCount)
+// Se ordena por la columna 'apariciones' de forma descendente.
+int tempCount, tempVal;         // Variables temporales del bucle
+
+for (i = 0; i < uniqueCount - 1; i++)
+{
+    for (j = i + 1; j < uniqueCount; j++)
+    {
+        // Si la frecuencia de 'j' es mayor que la de 'i', intercambiamos (Orden Descendente)
+        if (apariciones[j] > apariciones[i])
+        {
+            // Intercambiar apariciones
+            tempCount = apariciones[i];
+            apariciones[i] = apariciones[j];
+            apariciones[j] = tempCount;
+
+            // Intercambiar valores
+            tempVal = valores[i];
+            valores[i] = valores[j];
+            valores[j] = tempVal;
+        }
+    }
+}
+
+
+// 3. IMPRIMIR RESULTADOS ORDENADOS (Fase de Reporte)
+Printf("\n=== Resumen de Frecuencias Ordenado (%d Valores Únicos) ===\n", uniqueCount);
+for (i = 0; i < uniqueCount; i++)
+{
+    Printf("COUNT: %4d | VALUE: %10d\n", apariciones[i], valores[i]);
+}
+
+Printf("\n=== Finalizado ===\n");
