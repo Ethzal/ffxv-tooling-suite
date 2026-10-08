@@ -1,43 +1,131 @@
-# FFXV Data Tooling Suite: Herramientas de Análisis y Automatización de Datos
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" alt="Sparkles" width="25" height="25" /> FFXV Data Tooling Suite
 
-## 🚀 Descripción General
-Este repositorio contiene una suite de herramientas desarrolladas en **Java** y **Python** para realizar **ingeniería inversa, análisis y modificación programática** de los archivos de datos binarios y de configuración del videojuego Final Fantasy XV.
+Suite de herramientas desarrollada en **Java** y **Python** para el análisis, extracción, modificación y automatización de datos internos de **Final Fantasy XV**.
 
-El objetivo principal fue construir un *pipeline* de automatización para facilitar la creación de contenido avanzado (como nuevos sistemas de invocación) y la localización de recursos del juego.
+El proyecto surgió como una investigación personal sobre las estructuras binarias y sistemas de configuración del juego, evolucionando posteriormente hacia herramientas propias para automatizar tareas que inicialmente requerían edición manual.
 
----
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Toolbox.png" alt="Toolbox" width="25" height="25" /> Objetivos del proyecto
 
-## 🛠️ Stack Tecnológico y Componentes
+El proyecto combina **ingeniería inversa, análisis de datos binarios, scripting y automatización** para trabajar con diferentes estructuras internas del juego.
 
-| Categoría | Tecnologías y Herramientas |
-| :--- | :--- |
-| **Lenguajes Base** | Java, Python |
-| **Herramientas de Análisis** | 010 Editor, Git & GitHub |
-| **Conceptos Clave** | Ingeniería Inversa, Scripting, Automatización, Análisis de Binarios, Arquitectura de Datos |
+Entre sus principales objetivos:
 
----
-
-## 📂 Estructura del Repositorio
-
-El proyecto está organizado en módulos lógicos para demostrar buenas prácticas de modularidad:
-
-*   **`/src/`**: Contiene todo el código fuente Java.
-    *   `/com/ethzal/ffxv_tooling/models/`: Clase `Enemy.java`.
-    *   `/com/ethzal/ffxv_tooling/parser/`: Clase principal `EnemyDataReader.java`.
-    *   `/com/ethzal/ffxv_tooling/util/`: Clase `FileUtils.java` con utilidades estáticas.
-*   **`/data/`**: Contiene los archivos de *input* necesarios para ejecutar las herramientas (ej: `enemies.bin`, `unknown_enemy_ids.txt`).
-*   **`/output/`**: Carpeta donde se guardan los archivos generados por la herramienta (ej: `010_elements.txt`).
-*   // Siguientes actualizaciones:
-*   **`/python_tools/`**: Contiene el script de Web Scraping en Python.
-*   **`/010_editor_templates/`**: Contiene las plantillas `.bt` utilizadas para el análisis de bajo nivel.
-*   **`/docs/`**: Documentación detallada sobre las decisiones de ingeniería y el proceso de refactorización.
+- Analizar estructuras y campos dentro de archivos binarios.
+- Extraer y estructurar datos mediante herramientas propias.
+- Automatizar modificaciones sobre bloques de datos.
+- Crear herramientas para generar configuraciones personalizadas.
+- Investigar sistemas de lógica y configuración basados en XML.
+- Facilitar la creación y mantenimiento de mods mediante procesos reproducibles.
 
 ---
 
-## 💡 Próximos Pasos y Aprendizajes (Visión de Futuro)
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Camera%20with%20Flash.png" alt="Camera with Flash" width="25" height="25" /> Proyectos y herramientas
 
-Este proyecto es una demostración de capacidad técnica autodidacta. El siguiente paso sería:
+### 🔧 Custom Stats Tool
 
-1.  **Implementar Testing:** Añadir tests unitarios (JUnit/Mockito) a la clase `EnemyDataReader` para validar la lógica de parsing.
-2.  **Formalizar el Pipeline:** Integrar el script de Python en el flujo principal de Java para una automatización completa.
-3.  **Mejorar la Documentación Técnica:** Profundizar en el `Engineering_PostMortem.md` explicando el impacto de la optimización del caché y la refactorización realizada.
+Herramienta desarrollada en **Python** para generar configuraciones personalizadas de estadísticas del juego mediante una interfaz gráfica.
+
+Permite automatizar la creación de configuraciones sin necesidad de modificar manualmente los valores mediante un editor hexadecimal.
+
+### 📦 Data Block Replicator
+
+Script desarrollado para **010 Editor** que permite copiar bloques de datos entre diferentes estructuras binarias.
+
+Incluye funcionalidades para:
+
+- Seleccionar rangos de datos.
+- Detectar posibles valores enteros y `float`.
+- Registrar valores anteriores y posteriores.
+- Mostrar direcciones y posiciones de los datos.
+- Automatizar operaciones repetitivas sobre estructuras binarias.
+
+### 📊 Field Frequency Analyzer
+
+Herramienta para analizar la frecuencia de aparición de valores dentro de campos estructurados de archivos binarios.
+
+El proceso incluye extracción, validación, conteo de valores y búsqueda dentro de los datos analizados.
+
+### ☕ Java Data Parser
+
+Parser desarrollado en **Java** para extraer y estructurar información a partir de archivos binarios del juego.
+
+El parser identifica diferentes campos y atributos de las estructuras analizadas y genera una representación estructurada de los datos para facilitar su posterior procesamiento.
+
+### 🧩 XML Logic Analysis
+
+Investigación y experimentación sobre sistemas de lógica basados en **nodos XML**, utilizando pruebas iterativas para identificar relaciones entre nodos, condiciones y comportamientos dentro del juego.
+
+Este trabajo permitió desarrollar modificaciones de gameplay más complejas y comprender mejor el funcionamiento interno de determinados sistemas.
+
+---
+
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /> Aplicaciones prácticas
+
+Las herramientas desarrolladas se utilizaron para crear y mantener diferentes modificaciones de Final Fantasy XV, incluyendo:
+
+- Sistemas de invocación personalizables.
+- Modificaciones de dificultad.
+- Ajustes avanzados de combate.
+- Configuraciones personalizadas de estadísticas.
+- Herramientas de análisis y modificación de datos.
+
+Los diferentes mods y herramientas publicados acumulan aproximadamente **7.000 descargas** entre Nexus Mods y CurseForge.
+
+El proyecto también incluye la publicación de versiones, correcciones, actualizaciones de compatibilidad y resolución de problemas detectados por los usuarios.
+
+---
+
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Laptop.webp" alt="Laptop" width="25" height="25" /> Stack tecnológico
+
+| Categoría | Tecnologías / Herramientas |
+|:---|:---|
+| **Lenguajes** | Java · Python |
+| **Análisis binario** | 010 Editor |
+| **Ingeniería inversa** | Análisis de estructuras binarias · offsets · campos de datos |
+| **Scripting** | 010 Editor Binary Templates |
+| **Datos** | Archivos binarios · XML |
+| **Automatización** | Python · Java |
+| **Control de versiones** | Git · GitHub |
+
+---
+
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Classical%20Building.png" alt="Classical Building" width="25" height="25" /> Estructura del repositorio
+
+```text
+src/
+ └── Código fuente Java
+      ├── models/
+      ├── parser/
+      └── util/
+
+python_tools/
+ └── Herramientas y scripts Python
+
+010_editor_templates/
+ └── Plantillas Binary Template (.bt)
+
+data/
+ └── Archivos de entrada utilizados por las herramientas
+
+output/
+ └── Datos y resultados generados durante el procesamiento
+
+docs/
+ └── Documentación técnica del proyecto
+```
+
+---
+
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Light%20Bulb.png" alt="Light Bulb" width="25" height="25" /> Aprendizajes
+
+El proyecto permitió profundizar de forma autodidacta en:
+
+- Ingeniería inversa aplicada a software.
+- Análisis y estructuración de datos binarios.
+- Desarrollo de parsers y herramientas de automatización.
+- Scripting con 010 Editor.
+- Interacción entre diferentes herramientas y lenguajes.
+- Experimentación sistemática para comprender sistemas sin documentación.
+- Desarrollo, publicación y mantenimiento de software utilizado por otros usuarios.
+
+---
